@@ -4,6 +4,15 @@ import bottle
 import logging
 
 
+logformat = "%(levelname)s - %(message)s"
+formatter = logging.Formatter(logformat)
+log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
+ch = logging.StreamHandler()
+ch.setFormatter(formatter)
+log.addHandler(ch)
+
+
 @bottle.get('/')
 def info():
     return {
@@ -15,5 +24,22 @@ def info():
     }
 
 
+@bottle.post('/start')
+def start():
+    log.info('Starting round')
+
+
+@bottle.post('/move')
+def move():
+    log.debug('Move')
+
+
+@bottle.post('/end')
+def end():
+    log.info('End round')
+
+
 if __name__ == '__main__':
-    bottle.run()
+    bottle.run(
+        reloader=True,
+    )
